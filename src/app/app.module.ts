@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import * as firebase from 'firebase';
 import { SigninComponent } from './components/signin/signin.component';
+import { MenuComponent } from './components/menu/menu.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAFZM0alQjAav-AxG7i4mCJ5r6iw7FlTlY",
@@ -23,8 +24,8 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 @NgModule({
-  declarations: [AppComponent,SigninComponent],
-  entryComponents: [SigninComponent],
+  declarations: [AppComponent,SigninComponent,MenuComponent],
+  entryComponents: [SigninComponent,MenuComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
   providers: [
     StatusBar,

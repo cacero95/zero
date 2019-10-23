@@ -27,7 +27,7 @@ export class LoginPage implements OnInit {
   entrar() {
     this.dba.login(this.user).then((respuesta)=>{
       if (respuesta == true){
-        this.navegar('home');
+        this.navegar('menu/home');
       }
     })
   }
