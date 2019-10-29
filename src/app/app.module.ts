@@ -12,7 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
 import * as firebase from 'firebase';
 import { SigninComponent } from './components/signin/signin.component';
 import { MenuComponent } from './components/menu/menu.component';
-
+import { Camera } from '@ionic-native/camera/ngx';
 const firebaseConfig = {
   apiKey: "AIzaSyAFZM0alQjAav-AxG7i4mCJ5r6iw7FlTlY",
   authDomain: "atomic-snow-220819.firebaseapp.com",
@@ -30,6 +30,7 @@ firebase.initializeApp(firebaseConfig);
   providers: [
     StatusBar,
     SplashScreen,
+    Camera,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

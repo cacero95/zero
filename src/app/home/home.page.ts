@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MenuController } from '@ionic/angular';
+import { Camera } from '@ionic-native/camera/ngx';
 
 @Component({
   selector: 'app-home',
@@ -50,10 +51,19 @@ export class HomePage {
   ];
 
   status = 0;
-  constructor() {}
+  constructor(private camera:Camera) {}
 
   change_content(value){
     this.status = value;
   }
-
+  add(){
+    switch(this.status){
+      case 0:
+        break;
+      case 1: 
+        break;
+      case 2:
+        break;
+    }
+  }
 }
