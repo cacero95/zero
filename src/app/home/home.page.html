@@ -36,9 +36,10 @@
             </div>
         </ion-card-content>
         <ion-fab style="padding-bottom: 50px;" horizontal="center" edge="true" vertical="bottom">
-            <ion-fab-button (click)="add()" color="danger">
+            <ion-fab-button color="danger">
                 <ion-icon name="add"></ion-icon>
             </ion-fab-button>
+            <ion-input type="file" (change)="changeListener($event)" style=" position: absolute; top: 0; height: 70%; opacity: 0; "></ion-input>
         </ion-fab>
     </ion-card>
 </ion-content>

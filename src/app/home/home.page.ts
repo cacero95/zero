@@ -56,14 +56,9 @@ export class HomePage {
   change_content(value){
     this.status = value;
   }
-  add(){
-    switch(this.status){
-      case 0:
-        break;
-      case 1: 
-        break;
-      case 2:
-        break;
-    }
+  changeListener($event) : void {
+    console.log($event.target.files);
+    console.log($event);
+    console.log($event.target)
   }
 }
