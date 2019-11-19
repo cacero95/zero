@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { Camera } from '@ionic-native/camera/ngx';
+import { DbaService } from '../services/dba.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
-
+export class HomePage implements OnInit {
+  current_song;
   toolbar = [
     {
       title:'Tesis',
@@ -28,16 +29,7 @@ export class HomePage {
       value:1,
       content:{
         overall:`Rock | Metal | Relax`,
-        list:[
-          {
-            url:'https://firebasestorage.googleapis.com/v0/b/atomic-snow-220819.appspot.com/o/Linkin%20Park%20-%20One%20Step%20Closer%20(Lyrics).mp3?alt=media&token=cb02c42c-0b62-4812-aa3a-fb5e44803671',
-            name:'Linkin Park - One Step Closer (Lyrics).mp3'
-          },
-          {
-            url:'https://firebasestorage.googleapis.com/v0/b/atomic-snow-220819.appspot.com/o/SawanoHiroyuki%5BnZk%5D%20-%E3%80%8CREMEMBER%E3%80%8Dft.%20Mizuki%2C%20Gemie%2C%20Tielle%2C%20naNami%20_%20Yosh.mp3?alt=media&token=398ff9bd-3b4e-46d7-af0e-f446430131a1',
-            name:'SawanoHiroyuki[nZk] -「REMEMBER」ft. Mizuki, Gemie, Tielle, naNami _ Yosh.mp3'
-          }
-        ]
+        list:[]
       }
     },
     {
@@ -50,15 +42,38 @@ export class HomePage {
     }
   ];
 
-  status = 0;
-  constructor(private camera:Camera) {}
+  status = 1;
+  play:any;
+  constructor(private camera:Camera,
+    private dba:DbaService) {}
+
+  ngOnInit() {
+    
+    this.dba.get_music().subscribe((songs)=>{
+      let canciones:any = songs;
+      this.toolbar[1].content.list = canciones;
+    });
+  }
 
   change_content(value){
     this.status = value;
   }
-  changeListener($event) : void {
-    console.log($event.target.files);
-    console.log($event);
-    console.log($event.target)
+  change_song(song){
+    if (!this.play){
+      this.play= document.getElementById('reproductor');
+    }
+    this.current_song = song;
+    try {
+      this.play.play();
+    }
+    catch(err) {
+      console.log(err);
+    }
+  }
+  changeListener(event) : void {
+    
+    if (event.target.files.length > 0){
+      this.dba.upload_content(event.target.files);
+    }
   }
 }

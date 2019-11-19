@@ -6,6 +6,12 @@
         <ion-title>
             Principal
         </ion-title>
+        <ion-buttons *ngIf="status == 1" slot="end">
+            <ion-button>
+                <ion-icon name="add"></ion-icon>
+                <ion-input type="file" accept="audio/mp3" (change)="changeListener($event)" style=" position: absolute; top: 0; height: 70%; opacity: 0;" multiple></ion-input>
+            </ion-button>
+        </ion-buttons>
     </ion-toolbar>
     <ion-toolbar>
         <ion-tab-bar>
@@ -30,16 +36,21 @@
             </div>
             <div *ngIf="status == 1">
                 <div style="padding-right:80px;" *ngFor="let music of toolbar[1].content.list">
-                    <audio width="100%" controls [src]="music.url"></audio>
-                </div>
 
+                </div>
+                <ion-item (click)="change_song(music.url)" detail *ngFor="let music of toolbar[1].content.list">
+                    <ion-label>{{music.name}}</ion-label>
+                </ion-item>
             </div>
         </ion-card-content>
-        <ion-fab style="padding-bottom: 50px;" horizontal="center" edge="true" vertical="bottom">
-            <ion-fab-button color="danger">
-                <ion-icon name="add"></ion-icon>
-            </ion-fab-button>
-            <ion-input type="file" (change)="changeListener($event)" style=" position: absolute; top: 0; height: 70%; opacity: 0; "></ion-input>
-        </ion-fab>
     </ion-card>
+
+
 </ion-content>
+<ion-footer>
+    <ion-toolbar padding>
+        <audio id="reproductor" [src]="current_song" *ngIf="toolbar[1].content.list.length > 0" id="reproductor" width="100%" controls>
+            
+        </audio>
+    </ion-toolbar>
+</ion-footer>

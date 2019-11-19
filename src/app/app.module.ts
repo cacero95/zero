@@ -22,12 +22,12 @@ import { Camera } from '@ionic-native/camera/ngx';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAFZM0alQjAav-AxG7i4mCJ5r6iw7FlTlY",
-  authDomain: "atomic-snow-220819.firebaseapp.com",
-  databaseURL: "https://atomic-snow-220819.firebaseio.com",
-  projectId: "atomic-snow-220819",
-  storageBucket: "",
-  messagingSenderId: "660910679754",
-  appId: "1:660910679754:web:34fa0511807f61c262b633"
+    authDomain: "atomic-snow-220819.firebaseapp.com",
+    databaseURL: "https://atomic-snow-220819.firebaseio.com",
+    projectId: "atomic-snow-220819",
+    storageBucket: "atomic-snow-220819.appspot.com",
+    messagingSenderId: "660910679754",
+    appId: "1:660910679754:web:34fa0511807f61c262b633"
 };
 firebase.initializeApp(firebaseConfig);
 @NgModule({

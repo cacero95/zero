@@ -3,6 +3,9 @@ import * as firebase from 'firebase';
 import { AlertController, ToastController } from '@ionic/angular';
 import { Usuario } from '../models/usuario';
 import { Camera,CameraOptions } from '@ionic-native/camera/ngx';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { map } from 'rxjs/operators';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -11,7 +14,8 @@ export class DbaService {
   user:firebase.User;
   constructor(private alert:AlertController,
     private toast:ToastController,
-    private camera:Camera) { }
+    private camera:Camera,
+    private firedba:AngularFireDatabase) { }
 
 
   login(usuario:Usuario):Promise<any>{
@@ -54,7 +58,61 @@ export class DbaService {
     });
     toast.present();
   }
-  add_toStorage() {
+
+  get_music(){
+    return this.firedba.list('music').snapshotChanges()
+    .pipe(map(values=>{
+      return values.map((element)=>{
+        return element.payload.val();
+      })
+    }))
+  }
+
+  upload_content(files):Promise<any>{
+    let urls = [];
+    let firestorage = firebase.storage().ref();
+    let fire_task:firebase.storage.UploadTask;
+    return new Promise((resolve, reject)=>{
+      let count = 1;
+      for(let file of files){
+        let dba_name = new Date().valueOf().toString();
+        let file_name = file.name;
+        fire_task = firestorage.child(`/music/${file_name}`)
+        .put(file);
+        fire_task.on(firebase.storage.TaskEvent.STATE_CHANGED,
+          (status)=>{
+          },
+          (err)=>{
+            this.showAlert(':( Lo sentimos',"danger");
+          },
+          async ()=>{
+            await firestorage.child(`/music/${file_name}`).getDownloadURL()
+            .then(async(url)=>{
+              
+              let object = new Object();
+              object["name"] = file_name;
+              object["url"] = url
+              urls.push(object);
+              console.log('arriba');
+              await this.firedba.object(`music/${dba_name}${count}`).update(object).then(()=>{
+                count++;
+                this.showAlert(`${file_name} arriba!`, 'success');
+                console.log('dba subido');
+              }).catch(()=>{
+                this.showAlert(`${file_name} down!`, "danger");
+              })
+            })
+          })
+      }
+    }).then(()=>{
+      this.upload_dba(urls)
+    })
+  }
+  upload_dba(urls){
+    
+  }
+
+  add_imageToStorage() {
     let options: CameraOptions = {
       quality: 100,
       sourceType: this.camera.PictureSourceType.CAMERA,
