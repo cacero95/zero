@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
 import { AlertController, ToastController } from '@ionic/angular';
-import { Usuario } from '../models/usuario';
+import { Usuario, Upload_content } from '../models/usuario';
 import { Camera,CameraOptions } from '@ionic-native/camera/ngx';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { map } from 'rxjs/operators';
@@ -68,7 +68,7 @@ export class DbaService {
     }))
   }
   get_images(){
-    return this.firedba.list('images').snapshotChanges()
+    return this.firedba.list('imagenes').snapshotChanges()
     .pipe(map(values=>{
       return values.map((element)=>{
         return element.payload.val();
@@ -76,7 +76,6 @@ export class DbaService {
     }))
   }
 
-  get_image
 
   upload_content(files):Promise<any>{
     let urls = [];
@@ -112,60 +111,40 @@ export class DbaService {
             })
           })
       }
-    }).then(()=>{
-      this.upload_dba(urls)
     })
   }
-  upload_dba(urls){
-    
-  }
 
-  add_imageToStorage() {
-    let name = new Date().valueOf().toString();;
-    let options: CameraOptions = {
-      quality: 100,
-      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-      destinationType: this.camera.DestinationType.DATA_URL,
-      encodingType: this.camera.EncodingType.PNG,
-      mediaType: this.camera.MediaType.PICTURE,
-      correctOrientation: true,
-      targetHeight: 600,
-      targetWidth: 600,
-      allowEdit: true,
-    }
-    this.camera.getPicture(options).then((base64Image)=>{
-      let imagen:any;
-      imagen = "data:image/jpeg;base64," + base64Image;
-      this.showAlert(base64Image,"success").then(()=>{
-        let ref = firebase.storage().ref();
-        console.log(base64Image);
-        let uploadTask:firebase.storage.UploadTask = ref.child(`img/${name}`)
-        .putString(base64Image, 'base64',{contentType: 'image/jpeg'});
-        console.log(uploadTask);
-        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-          ()=>{
-            console.log('subiendo');
-          },
-          (err)=>{
-            console.log(err);
-          },()=>{
-            ref.child(`img/${name}`).getDownloadURL().then((url)=>{
-              let picture = new Object();
-              picture = {
-                name,
-                type:"png",
-                url
-              }
-              this.firedba.object(`images/${name}`).update(picture).then(()=>{
-                this.showAlert(`up!`, 'success');
-              }).catch(()=>{
-                this.showAlert(`down!`, 'danger');
+  add_imageToStorage(contenido:Upload_content):Promise<any> {
+    return new Promise((resolve,reject)=>{
+      let ref = firebase.storage().ref();
+          let uploadTask:firebase.storage.UploadTask = ref.child(`imagenes/${contenido.name}`)
+          .putString(contenido.url, 'base64',{contentType: 'image/jpeg'});
+          console.log(uploadTask);
+          uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+            ()=>{
+              console.log('subiendo');
+            },
+            (err)=>{
+              console.log(err);
+              this.showAlert(`${err.message}`,'danger');
+              reject(false);
+            },()=>{
+              ref.child(`imagenes/${contenido.name}`).getDownloadURL().then((url)=>{
+                let picture = new Object();
+                picture = {
+                  name:contenido.name,
+                  description:contenido.description,
+                  url
+                }
+                this.firedba.object(`imagenes/${contenido.name}`).update(picture).then(()=>{
+                  this.showAlert(`up!`, 'success');
+                  resolve(true);
+                }).catch(()=>{
+                  this.showAlert(`down!`, 'danger');
+                  reject(false);
+                })
               })
-            })
-          })
-      })
-    }).catch((err)=>{
-      this.showAlert(err.message,"danger");
+            })  
     })
   }
 }

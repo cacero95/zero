@@ -18,6 +18,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { SigninComponent } from './components/signin/signin.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { Camera } from '@ionic-native/camera/ngx';
+import { DataColectorComponent } from './components/data-colector/data-colector.component';
 
 
 const firebaseConfig = {
@@ -31,8 +32,8 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 @NgModule({
-  declarations: [AppComponent,SigninComponent,MenuComponent],
-  entryComponents: [SigninComponent,MenuComponent],
+  declarations: [AppComponent,SigninComponent,MenuComponent,DataColectorComponent],
+  entryComponents: [SigninComponent,MenuComponent,DataColectorComponent],
   imports: [BrowserModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,

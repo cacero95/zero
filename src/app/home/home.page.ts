@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Platform, AlertController } from '@ionic/angular';
+import { Platform, AlertController, ModalController } from '@ionic/angular';
 import { Camera } from '@ionic-native/camera/ngx';
 import { DbaService } from '../services/dba.service';
 import { map } from 'rxjs/operators';
+import { DataColectorComponent } from '../components/data-colector/data-colector.component';
 
 @Component({
   selector: 'app-home',
@@ -49,7 +50,8 @@ export class HomePage implements OnInit {
   constructor(private camera:Camera,
     private dba:DbaService,
     private platform:Platform,
-    private alert:AlertController) {}
+    private alert:AlertController,
+    private modal:ModalController) {}
 
   ngOnInit() {
     
@@ -58,8 +60,9 @@ export class HomePage implements OnInit {
       this.toolbar[1].content.list = canciones;
     });
 
-    this.dba.get_images().subscribe((img)=>{
-      console.log(img)
+    this.dba.get_images().subscribe((imgs)=>{
+      console.log(imgs)
+      this.toolbar[2].content.list = imgs;
     })
   }
 
@@ -84,20 +87,15 @@ export class HomePage implements OnInit {
       this.dba.upload_content(event.target.files);
     }
   }
+  // este metodono solo añade una imagen sino tambien una descripción
   async add_image(){
-    if(this.platform.is('cordova')){
-      this.dba.add_imageToStorage();
-    }
-    else {
-      let alert = await this.alert.create({
-        header:"Por favor",
-        subHeader:"Use la version movil para usar",
-        message:"La camara",
-        animated:true,
-        mode:"ios",
-        buttons:['Confirmar']
-      });
-      alert.present();
-    }
+
+    let modal = await this.modal.create({
+      component:DataColectorComponent,
+      animated:true,
+      mode:"ios"
+    });
+    modal.present();
+    
   }
 }

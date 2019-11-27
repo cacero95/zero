@@ -3,3 +3,8 @@ export interface Usuario {
     password:string;
     name:string;    
 }
+export interface Upload_content {
+    name:string;
+    description:string;
+    url:string;
+}

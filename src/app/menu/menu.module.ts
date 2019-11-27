@@ -18,7 +18,8 @@ const routes: Routes = [
     component: MenuPage,
     children: [
       {path:'home', loadChildren:'../home/home.module#HomePageModule'},
-      {path:'login', loadChildren:'../login/login.module#LoginPageModule'}
+      {path:'login', loadChildren:'../login/login.module#LoginPageModule'},
+      {path:'series', loadChildren:'../series/series.module#SeriesPageModule'}
     ]
   }
 ];

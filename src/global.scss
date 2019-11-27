@@ -36,6 +36,22 @@
     }
 }
 
+@media(min-width:200px) {
+    .imagenes {
+        width: 200px;
+        height: 200px;
+        margin: auto;
+    }
+}
+
+@media(min-width:600px) {
+    .imagenes {
+        width: 400px;
+        height: 400px;
+        margin: auto;
+    }
+}
+
 @import "~@ionic/angular/css/core.css";
 
 /* Basic CSS for apps built with Ionic */

@@ -24,7 +24,7 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-card>
+    <ion-card style="margin-bottom: 50px;">
         <ion-card-header>
             <ion-card-title text-center> {{toolbar[status].title}} </ion-card-title>
         </ion-card-header>
@@ -42,6 +42,13 @@
                     <ion-label>{{music.name}}</ion-label>
                 </ion-item>
             </div>
+            <div *ngIf="status == 2" style="padding-top: 20px;">
+                <div *ngFor="let img of toolbar[2].content.list">
+                    <img class="imagenes" [src]="img.url" alt=""> <br>
+                    <p style="border: 1px solid #454444; border-radius: 20px; padding:10px;">{{img.description}}</p>
+                    <hr>
+                </div>
+            </div>
         </ion-card-content>
     </ion-card>
     <ion-fab *ngIf="status == 2" vertical="bottom" horizontal="center" slot="fixed">
@@ -54,7 +61,6 @@
 <ion-footer>
     <ion-toolbar *ngIf="status == 1" padding>
         <audio id="reproductor" [src]="current_song" *ngIf="toolbar[1].content.list.length > 0" id="reproductor" width="100%" controls>
-            
         </audio>
     </ion-toolbar>
 </ion-footer>
