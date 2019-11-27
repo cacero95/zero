@@ -4,6 +4,9 @@ import { SigninComponent } from '../components/signin/signin.component';
 import { ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { DbaService } from '../services/dba.service';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { map } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-login',
@@ -20,9 +23,15 @@ export class LoginPage implements OnInit {
   ]
   constructor(private dba:DbaService,
     private router:Router,
-    private modal:ModalController) { }
+    private modal:ModalController,
+    private auth:AngularFireAuth) { }
 
   ngOnInit() {
+    this.auth.authState.subscribe((usuario)=>{
+      if(usuario.email){
+        this.router.navigate(['menu/home']);
+      }
+    })
   }
   entrar() {
     this.dba.login(this.user).then((respuesta)=>{

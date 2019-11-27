@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController, Platform, AlertController } from '@ionic/angular';
+import { Platform, AlertController } from '@ionic/angular';
 import { Camera } from '@ionic-native/camera/ngx';
 import { DbaService } from '../services/dba.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -37,7 +38,8 @@ export class HomePage implements OnInit {
       icon:'assets/img/ps.svg',
       value:2,
       content: {
-        overall: `ps4, ps vita, ps1, Xbox, Xbox 360 games`
+        overall: `ps4, ps vita, ps1, Xbox, Xbox 360 games`,
+        list:[]
       }
     }
   ];
@@ -55,6 +57,10 @@ export class HomePage implements OnInit {
       let canciones:any = songs;
       this.toolbar[1].content.list = canciones;
     });
+
+    this.dba.get_images().subscribe((img)=>{
+      console.log(img)
+    })
   }
 
   change_content(value){

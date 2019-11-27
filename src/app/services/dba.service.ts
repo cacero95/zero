@@ -67,6 +67,16 @@ export class DbaService {
       })
     }))
   }
+  get_images(){
+    return this.firedba.list('images').snapshotChanges()
+    .pipe(map(values=>{
+      return values.map((element)=>{
+        return element.payload.val();
+      })
+    }))
+  }
+
+  get_image
 
   upload_content(files):Promise<any>{
     let urls = [];
@@ -124,18 +134,20 @@ export class DbaService {
       allowEdit: true,
     }
     this.camera.getPicture(options).then((base64Image)=>{
-      let imagen = "data:image/jpeg;base64," + base64Image;
+      let imagen:any;
+      imagen = "data:image/jpeg;base64," + base64Image;
       this.showAlert(base64Image,"success").then(()=>{
         let ref = firebase.storage().ref();
+        console.log(base64Image);
         let uploadTask:firebase.storage.UploadTask = ref.child(`img/${name}`)
-        .putString(imagen, 'base64', {contentType: 'image/jpeg'});
-        console.log(imagen);
+        .putString(base64Image, 'base64',{contentType: 'image/jpeg'});
+        console.log(uploadTask);
         uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
           ()=>{
-
+            console.log('subiendo');
           },
-          ()=>{
-
+          (err)=>{
+            console.log(err);
           },()=>{
             ref.child(`img/${name}`).getDownloadURL().then((url)=>{
               let picture = new Object();
