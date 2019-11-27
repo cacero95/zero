@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController } from '@ionic/angular';
+import { MenuController, Platform, AlertController } from '@ionic/angular';
 import { Camera } from '@ionic-native/camera/ngx';
 import { DbaService } from '../services/dba.service';
 
@@ -45,7 +45,9 @@ export class HomePage implements OnInit {
   status = 1;
   play:any;
   constructor(private camera:Camera,
-    private dba:DbaService) {}
+    private dba:DbaService,
+    private platform:Platform,
+    private alert:AlertController) {}
 
   ngOnInit() {
     
@@ -74,6 +76,22 @@ export class HomePage implements OnInit {
     
     if (event.target.files.length > 0){
       this.dba.upload_content(event.target.files);
+    }
+  }
+  async add_image(){
+    if(this.platform.is('cordova')){
+      this.dba.add_imageToStorage();
+    }
+    else {
+      let alert = await this.alert.create({
+        header:"Por favor",
+        subHeader:"Use la version movil para usar",
+        message:"La camara",
+        animated:true,
+        mode:"ios",
+        buttons:['Confirmar']
+      });
+      alert.present();
     }
   }
 }

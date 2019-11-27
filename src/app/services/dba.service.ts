@@ -93,11 +93,9 @@ export class DbaService {
               object["name"] = file_name;
               object["url"] = url
               urls.push(object);
-              console.log('arriba');
               await this.firedba.object(`music/${dba_name}${count}`).update(object).then(()=>{
                 count++;
                 this.showAlert(`${file_name} arriba!`, 'success');
-                console.log('dba subido');
               }).catch(()=>{
                 this.showAlert(`${file_name} down!`, "danger");
               })
@@ -113,20 +111,47 @@ export class DbaService {
   }
 
   add_imageToStorage() {
+    let name = new Date().valueOf().toString();;
     let options: CameraOptions = {
       quality: 100,
-      sourceType: this.camera.PictureSourceType.CAMERA,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.PNG,
       mediaType: this.camera.MediaType.PICTURE,
       correctOrientation: true,
-      targetHeight: 512,
-      targetWidth: 512,
+      targetHeight: 600,
+      targetWidth: 600,
       allowEdit: true,
     }
     this.camera.getPicture(options).then((base64Image)=>{
-      console.log(base64Image);
-      this.showAlert(base64Image,"success");
+      let imagen = "data:image/jpeg;base64," + base64Image;
+      this.showAlert(base64Image,"success").then(()=>{
+        let ref = firebase.storage().ref();
+        let uploadTask:firebase.storage.UploadTask = ref.child(`img/${name}`)
+        .putString(imagen, 'base64', {contentType: 'image/jpeg'});
+        console.log(imagen);
+        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+          ()=>{
+
+          },
+          ()=>{
+
+          },()=>{
+            ref.child(`img/${name}`).getDownloadURL().then((url)=>{
+              let picture = new Object();
+              picture = {
+                name,
+                type:"png",
+                url
+              }
+              this.firedba.object(`images/${name}`).update(picture).then(()=>{
+                this.showAlert(`up!`, 'success');
+              }).catch(()=>{
+                this.showAlert(`down!`, 'danger');
+              })
+            })
+          })
+      })
     }).catch((err)=>{
       this.showAlert(err.message,"danger");
     })

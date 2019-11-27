@@ -9,7 +9,7 @@
         <ion-buttons *ngIf="status == 1" slot="end">
             <ion-button>
                 <ion-icon name="add"></ion-icon>
-                <ion-input type="file" accept="audio/mp3" (change)="changeListener($event)" style=" position: absolute; top: 0; height: 70%; opacity: 0;" multiple></ion-input>
+                <ion-input type="file" (change)="changeListener($event)" style=" position: absolute; top: 0; height: 70%; opacity: 0;" multiple></ion-input>
             </ion-button>
         </ion-buttons>
     </ion-toolbar>
@@ -44,11 +44,15 @@
             </div>
         </ion-card-content>
     </ion-card>
-
+    <ion-fab *ngIf="status == 2" vertical="bottom" horizontal="center" slot="fixed">
+        <ion-fab-button (click)="add_image()">
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
 
 </ion-content>
 <ion-footer>
-    <ion-toolbar padding>
+    <ion-toolbar *ngIf="status == 1" padding>
         <audio id="reproductor" [src]="current_song" *ngIf="toolbar[1].content.list.length > 0" id="reproductor" width="100%" controls>
             
         </audio>
