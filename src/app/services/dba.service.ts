@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, ToastController, LoadingController } from '@ionic/angular';
 import { Usuario, Upload_content } from '../models/usuario';
-import { Camera,CameraOptions } from '@ionic-native/camera/ngx';
+import { Camera } from '@ionic-native/camera/ngx';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { map } from 'rxjs/operators';
 
@@ -15,7 +15,8 @@ export class DbaService {
   constructor(private alert:AlertController,
     private toast:ToastController,
     private camera:Camera,
-    private firedba:AngularFireDatabase) { }
+    private firedba:AngularFireDatabase,
+    private loading:LoadingController) { }
 
 
   login(usuario:Usuario):Promise<any>{
@@ -75,7 +76,7 @@ export class DbaService {
       })
     }))
   }
-
+  
 
   upload_content(files):Promise<any>{
     let urls = [];
@@ -115,14 +116,25 @@ export class DbaService {
   }
 
   add_imageToStorage(contenido:Upload_content):Promise<any> {
+    
     return new Promise((resolve,reject)=>{
+      
       let ref = firebase.storage().ref();
           let uploadTask:firebase.storage.UploadTask = ref.child(`imagenes/${contenido.name}`)
           .putString(contenido.url, 'base64',{contentType: 'image/jpeg'});
           console.log(uploadTask);
           uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-            ()=>{
-              console.log('subiendo');
+            async(percentaje)=>{
+
+              let porcentaje = (percentaje.totalBytes / percentaje.bytesTransferred) * 100;
+              let load = await this.loading.create({
+                message:`Completado ${porcentaje}`,
+                animated:true,
+                mode:'ios',
+                duration:3000
+              });
+              load.present();    
+                            
             },
             (err)=>{
               console.log(err);

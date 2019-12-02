@@ -50,7 +50,6 @@ export class HomePage implements OnInit {
   constructor(private camera:Camera,
     private dba:DbaService,
     private platform:Platform,
-    private alert:AlertController,
     private modal:ModalController) {}
 
   ngOnInit() {

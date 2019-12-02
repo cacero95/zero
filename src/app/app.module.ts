@@ -19,6 +19,7 @@ import { SigninComponent } from './components/signin/signin.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { Camera } from '@ionic-native/camera/ngx';
 import { DataColectorComponent } from './components/data-colector/data-colector.component';
+import { VisualSeriesComponent } from './components/visual-series/visual-series.component';
 
 
 const firebaseConfig = {
@@ -32,8 +33,8 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 @NgModule({
-  declarations: [AppComponent,SigninComponent,MenuComponent,DataColectorComponent],
-  entryComponents: [SigninComponent,MenuComponent,DataColectorComponent],
+  declarations: [AppComponent,SigninComponent,MenuComponent,DataColectorComponent,VisualSeriesComponent],
+  entryComponents: [SigninComponent,MenuComponent,DataColectorComponent, VisualSeriesComponent],
   imports: [BrowserModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,

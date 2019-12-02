@@ -4,18 +4,26 @@
             <ion-menu-button></ion-menu-button>
         </ion-buttons>
         <ion-title>Mis series</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="add_post()">
+                <ion-icon name="add"></ion-icon>
+            </ion-button>
+        </ion-buttons>
     </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-    <ion-card>
-        <img class="imagenes" src="" alt="">
-        <ion-card-content>
-            <ion-card-header>
-                <ion-card-subtitle></ion-card-subtitle>
-                <ion-card-title></ion-card-title>
-            </ion-card-header>
-            <ion-card-content></ion-card-content>
-        </ion-card-content>
-    </ion-card>
+    <div *ngIf="content.length > 0">
+        <ion-card>
+            <img class="imagenes" src="" alt="">
+            <ion-card-content>
+                <ion-card-header>
+                    <ion-card-subtitle></ion-card-subtitle>
+                    <ion-card-title></ion-card-title>
+                </ion-card-header>
+                <ion-card-content></ion-card-content>
+            </ion-card-content>
+        </ion-card>
+
+    </div>
 </ion-content>
