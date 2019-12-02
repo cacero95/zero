@@ -13,15 +13,18 @@
 </ion-header>
 
 <ion-content padding>
-    <div *ngIf="content.length > 0">
-        <ion-card>
-            <img class="imagenes" src="" alt="">
+    <div>
+        <ion-card *ngFor="let serie of series">
             <ion-card-content>
                 <ion-card-header>
                     <ion-card-subtitle></ion-card-subtitle>
-                    <ion-card-title></ion-card-title>
+                    <ion-card-title>{{serie.data().owner_name}}</ion-card-title>
                 </ion-card-header>
-                <ion-card-content></ion-card-content>
+                <ion-card-content>
+                    <p>
+                        {{serie.data().description}}
+                    </p>
+                </ion-card-content>
             </ion-card-content>
         </ion-card>
 
