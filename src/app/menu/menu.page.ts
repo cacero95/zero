@@ -18,6 +18,11 @@ export class MenuPage implements OnInit {
       title:'Series',
       url: '/menu/series',
       icon:'people'
+    },
+    {
+      title:'Compartido',
+      url:'/menu/share-content',
+      icon:'share'
     }
   ];
   constructor(private router:Router,

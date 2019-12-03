@@ -19,7 +19,8 @@ const routes: Routes = [
     children: [
       {path:'home', loadChildren:'../home/home.module#HomePageModule'},
       {path:'login', loadChildren:'../login/login.module#LoginPageModule'},
-      {path:'series', loadChildren:'../series/series.module#SeriesPageModule'}
+      {path:'series', loadChildren:'../series/series.module#SeriesPageModule'},
+      {path:'share-content', loadChildren:'../share-content/share-content.module#ShareContentPageModule'}
     ]
   }
 ];
