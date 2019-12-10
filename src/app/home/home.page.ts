@@ -4,6 +4,7 @@ import { Camera } from '@ionic-native/camera/ngx';
 import { DbaService } from '../services/dba.service';
 import { map } from 'rxjs/operators';
 import { DataColectorComponent } from '../components/data-colector/data-colector.component';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-home',
@@ -50,7 +51,7 @@ export class HomePage implements OnInit {
   constructor(private camera:Camera,
     private dba:DbaService,
     private platform:Platform,
-    private modal:ModalController) {}
+    private modal:ModalController ) {}
 
   ngOnInit() {
     
@@ -60,7 +61,6 @@ export class HomePage implements OnInit {
     });
 
     this.dba.get_images().subscribe((imgs)=>{
-      console.log(imgs)
       this.toolbar[2].content.list = imgs;
     })
   }
@@ -88,13 +88,28 @@ export class HomePage implements OnInit {
   }
   // este metodono solo añade una imagen sino tambien una descripción
   async add_image(){
+    
+    console.log(firebase.analytics());
+    firebase.analytics().logEvent("my_event",{param1: "Android"});
 
+    firebase.analytics().logEvent('select_content', {
+      content_type: 'image',
+      content_id: 'P12453',
+      items: [{ name: 'Kittens' }]
+    });
+    
+    if(this.platform.is('cordova')){
+      firebase.analytics().logEvent('my_event', {param1: "value1"});
+      
+    }
     let modal = await this.modal.create({
       component:DataColectorComponent,
       animated:true,
       mode:"ios"
     });
     modal.present();
+
+    
     
   }
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import * as vis from 'vis-network';
+import * as vis from 'vis';
+
 @Component({
   selector: 'app-share-content',
   templateUrl: './share-content.page.html',
@@ -12,6 +13,7 @@ export class ShareContentPage implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    
     let graph:any = document.querySelector('#network');
     
     /**
@@ -32,7 +34,6 @@ export class ShareContentPage implements OnInit {
     { id: 9, value: 30, label: "Mick" },
     { id: 10, value: 18, label: "Tod" }
   ];
-
   // create connections between people
   // value corresponds with the amount of contact between two people
   edges = [
@@ -157,7 +158,7 @@ export class ShareContentPage implements OnInit {
         }
       }
     }
-    var container = document.getElementById("mynetwork");
+    
     new vis.Network(graph, this.contenido.content, this.contenido.options);
   }
 

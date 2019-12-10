@@ -20,18 +20,21 @@ import { MenuComponent } from './components/menu/menu.component';
 import { Camera } from '@ionic-native/camera/ngx';
 import { DataColectorComponent } from './components/data-colector/data-colector.component';
 import { VisualSeriesComponent } from './components/visual-series/visual-series.component';
-
+import { FirebaseAnalytics } from '@ionic-native/firebase-analytics/ngx';
+import { HttpClientModule } from '@angular/common/http';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAFZM0alQjAav-AxG7i4mCJ5r6iw7FlTlY",
-    authDomain: "atomic-snow-220819.firebaseapp.com",
-    databaseURL: "https://atomic-snow-220819.firebaseio.com",
-    projectId: "atomic-snow-220819",
-    storageBucket: "atomic-snow-220819.appspot.com",
-    messagingSenderId: "660910679754",
-    appId: "1:660910679754:web:34fa0511807f61c262b633"
+  authDomain: "atomic-snow-220819.firebaseapp.com",
+  databaseURL: "https://atomic-snow-220819.firebaseio.com",
+  projectId: "atomic-snow-220819",
+  storageBucket: "atomic-snow-220819.appspot.com",
+  messagingSenderId: "660910679754",
+  appId: "1:660910679754:web:34fa0511807f61c262b633",
+  measurementId: "G-DJM9P70M5J"
 };
 firebase.initializeApp(firebaseConfig);
+firebase.analytics();
 @NgModule({
   declarations: [AppComponent,SigninComponent,MenuComponent,DataColectorComponent,VisualSeriesComponent],
   entryComponents: [SigninComponent,MenuComponent,DataColectorComponent, VisualSeriesComponent],
@@ -39,12 +42,14 @@ firebase.initializeApp(firebaseConfig);
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
+    HttpClientModule,
      IonicModule.forRoot(),
       AppRoutingModule],
   providers: [
     StatusBar,
     SplashScreen,
     Camera,
+    FirebaseAnalytics,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
