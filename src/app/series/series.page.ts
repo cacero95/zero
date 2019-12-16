@@ -39,7 +39,7 @@ export class SeriesPage implements OnInit {
 	    description:"this is a test for firebase functions",
 	    url:"https://www.pushwoosh.com/blog/content/images/2019/03/regular_push_notification_flow-1.png"
     }
-    this.http.post("https://us-central1-atomic-snow-220819.cloudfunctions.net/updateDataDba",test,{
+    this.http.post("https://us-central1-atomic-snow-220819.cloudfunctions.net/helloWorld",test,{
       responseType:"text"
     }).subscribe((data)=>{
       console.log(data)

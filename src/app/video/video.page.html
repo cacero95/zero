@@ -1,0 +1,41 @@
+<ion-header>
+    <ion-toolbar color="dark" mode="ios">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title color="light">Player</ion-title>
+        <!---
+          <ion-buttons slot="end">
+            <ion-button (click)="add()">
+                <ion-icon mode="md" name="add"></ion-icon>
+
+            </ion-button>
+        </ion-buttons>
+        -->
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+    <section>
+        <video *ngIf="!url" src="assets/Yugioh - Seto Kaiba You're Not Me.mp4" autoplay="" loop=""></video>
+        <iframe *ngIf="url" [src]="url" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>
+        <div class="box">
+            <div *ngIf="!url">
+                <span> <video src="assets/Yugioh - Seto Kaiba You're Not Me.mp4" autoplay="" loop="" muted></video></span>
+                <span> <video src="assets/Yugioh - Seto Kaiba You're Not Me.mp4" autoplay="" loop="" muted></video></span>
+                <span> <video src="assets/Yugioh - Seto Kaiba You're Not Me.mp4" autoplay="" loop="" muted></video></span>
+            </div>
+            <div *ngIf="url">
+                <span>
+                <iframe [src]="url" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              </span>
+                <span>
+                  <iframe [src]="url" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              </span>
+                <span>
+                  <iframe [src]="url" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              </span>
+            </div>
+        </div>
+    </section>
+</ion-content>

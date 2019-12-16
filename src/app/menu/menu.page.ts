@@ -23,6 +23,11 @@ export class MenuPage implements OnInit {
       title:'Compartido',
       url:'/menu/share-content',
       icon:'share'
+    },
+    {
+      title:'Videos',
+      url:'/menu/video',
+      icon:'play-circle'
     }
   ];
   constructor(private router:Router,
