@@ -22,6 +22,8 @@ import { DataColectorComponent } from './components/data-colector/data-colector.
 import { VisualSeriesComponent } from './components/visual-series/visual-series.component';
 import { FirebaseAnalytics } from '@ionic-native/firebase-analytics/ngx';
 import { HttpClientModule } from '@angular/common/http';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAFZM0alQjAav-AxG7i4mCJ5r6iw7FlTlY",
@@ -44,7 +46,8 @@ firebase.analytics();
     AngularFireAuthModule,
     HttpClientModule,
      IonicModule.forRoot(),
-      AppRoutingModule],
+      AppRoutingModule,
+      ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })],
   providers: [
     StatusBar,
     SplashScreen,
