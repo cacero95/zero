@@ -3,7 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { Upload_content } from '../models/usuario';
 import { VisualSeriesComponent } from '../components/visual-series/visual-series.component';
 import { ColectionsService } from '../services/colections.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 
 @Component({
@@ -39,12 +39,17 @@ export class SeriesPage implements OnInit {
 	    description:"this is a test for firebase functions",
 	    url:"https://www.pushwoosh.com/blog/content/images/2019/03/regular_push_notification_flow-1.png"
     }
-    this.http.post("https://us-central1-atomic-snow-220819.cloudfunctions.net/helloWorld",test,{
-      responseType:"text"
-    }).subscribe((data)=>{
-      console.log(data)
-    },err=>{
-      console.log(err)
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': 'secret-key'
+      })
+     };
+    console.log(test);
+    this.http.post('https://us-central1-atomic-snow-220819.cloudfunctions.net/updateDataDba',test,httpOptions).subscribe((data)=>{
+      console.log(data);
+    },(err)=>{
+      console.log(err);
     })
   }
 }
