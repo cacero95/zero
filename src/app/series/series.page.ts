@@ -4,6 +4,7 @@ import { Upload_content } from '../models/usuario';
 import { VisualSeriesComponent } from '../components/visual-series/visual-series.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DbaService } from '../services/dba.service';
+import { DataColectorComponent } from '../components/data-colector/data-colector.component';
 
 
 @Component({
@@ -37,12 +38,6 @@ export class SeriesPage implements OnInit {
      * 
      * 
      */
-  }
-  async add_post (){
-    let modal = await this.modal.create({
-      component:VisualSeriesComponent
-    });
-    modal.present();
   }
   async push_funtions(event){
     if (!this.platform.is('cordova')){
@@ -78,6 +73,14 @@ export class SeriesPage implements OnInit {
           })
         })
       }
+    }
+    else {
+      let modal = await this.modal.create({
+        animated:true,
+        mode:'ios',
+        component:DataColectorComponent
+      });
+      modal.present();
     }
     /**
      let test:Upload_content = {
