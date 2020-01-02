@@ -59,35 +59,24 @@ export class DbaService {
     });
     toast.present();
   }
-
-  get_music(){
-    return this.firedba.list('music').snapshotChanges()
+  get_content(query){
+    return this.firedba.list(query).snapshotChanges()
     .pipe(map(values=>{
       return values.map((element)=>{
         return element.payload.val();
       })
     }))
   }
-  get_images(){
-    return this.firedba.list('imagenes').snapshotChanges()
-    .pipe(map(values=>{
-      return values.map((element)=>{
-        return element.payload.val();
-      })
-    }))
-  }
-  
-
-  upload_content(files):Promise<any>{
+  upload_content(files,path):Promise<any>{
     let urls = [];
     let firestorage = firebase.storage().ref();
     let fire_task:firebase.storage.UploadTask;
-    return new Promise((resolve, reject)=>{
+    return new Promise(()=>{
       let count = 1;
       for(let file of files){
         let dba_name = new Date().valueOf().toString();
         let file_name = file.name;
-        fire_task = firestorage.child(`/music/${file_name}`)
+        fire_task = firestorage.child(`/${path}/${file_name}`)
         .put(file);
         fire_task.on(firebase.storage.TaskEvent.STATE_CHANGED,
           (status)=>{
@@ -96,14 +85,14 @@ export class DbaService {
             this.showAlert(':( Lo sentimos',"danger");
           },
           async ()=>{
-            await firestorage.child(`/music/${file_name}`).getDownloadURL()
+            await firestorage.child(`/${path}/${file_name}`).getDownloadURL()
             .then(async(url)=>{
               
               let object = new Object();
               object["name"] = file_name;
               object["url"] = url
               urls.push(object);
-              await this.firedba.object(`music/${dba_name}${count}`).update(object).then(()=>{
+              await this.firedba.object(`${path}/${dba_name}${count}`).update(object).then(()=>{
                 count++;
                 this.showAlert(`${file_name} arriba!`, 'success');
               }).catch(()=>{
@@ -114,7 +103,78 @@ export class DbaService {
       }
     })
   }
-
+  upload_series(path, contenido):Promise<any>{
+    console.log(contenido);
+    // en contenido.archivo viene el contenido del la imagen que se va a cargar
+    let content:Upload_content = {
+      name:contenido.name,
+      description:contenido.description,
+      url:""
+    }
+    let formatos_validos = ["png","jpg", "gif", "jpeg"];
+    return new Promise(async(resolve,reject)=>{
+      let half = contenido.archivos[0].name.split(".");
+      let extension = half[half.length-1].toLowerCase();
+      console.log(extension);
+      if(formatos_validos.indexOf(extension) < 0){
+        let toast = await this.toast.create({
+          header:'Formato no valido',
+          color:'danger',
+          duration:3000,
+          mode:'ios',
+          animated:true
+        });
+        toast.present();
+        reject(false);
+      }
+      else {
+        let ref = firebase.storage().ref();
+        let uploadTask:firebase.storage.UploadTask = ref.child(`imagenes/${content.name}`)
+        .put(contenido.archivos[0]);
+        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+          async(status)=>{
+            console.log(status);
+            let toast = await this.toast.create({
+              header:`Cargando: ${(status.totalBytes / status.bytesTransferred)*100}`,
+              animated:true,
+              color:'primary',
+              duration:1000
+            });
+            toast.present();
+          },
+          (err)=>{
+            reject(err);
+          },
+          ()=>{
+            ref.child(`imagenes/${content.name}`).getDownloadURL().then(async(url)=>{
+              content.url = url;
+              this.firedba.object(`${path}/${content.name}`).update(content).then(async()=>{
+                let toast = await this.toast.create({
+                  header:'Completed :)',
+                  duration:2000,
+                  color:'success',
+                  animated:true,
+                  mode:'ios'
+                });
+                toast.present();
+              }).catch(async(err)=>{
+                let toast = await this.toast.create({
+                  header:`${err.message}`,
+                  duration:2000,
+                  animated:true,
+                  color:'danger',
+                  mode:'ios'
+                });
+                toast.present();
+                resolve(true);
+              })
+              
+              
+            })
+          })
+      }
+    })
+  }
   add_imageToStorage(contenido:Upload_content):Promise<any> {
     
     return new Promise((resolve,reject)=>{

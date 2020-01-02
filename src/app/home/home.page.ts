@@ -54,15 +54,13 @@ export class HomePage implements OnInit {
     private modal:ModalController ) {}
 
   ngOnInit() {
-    
-    this.dba.get_music().subscribe((songs)=>{
+    this.dba.get_content('music').subscribe((songs)=>{
       let canciones:any = songs;
       this.toolbar[1].content.list = canciones;
     });
-
-    this.dba.get_images().subscribe((imgs)=>{
+    this.dba.get_content('imagenes').subscribe((imgs)=>{
       this.toolbar[2].content.list = imgs;
-    })
+    });
   }
 
   change_content(value){
@@ -83,15 +81,12 @@ export class HomePage implements OnInit {
   changeListener(event) : void {
     
     if (event.target.files.length > 0){
-      this.dba.upload_content(event.target.files);
+      this.dba.upload_content(event.target.files,'music');
     }
   }
   // este metodono solo añade una imagen sino tambien una descripción
   async add_image(){
-    
-    console.log(firebase.analytics());
     firebase.analytics().logEvent("my_event",{param1: "Android"});
-
     firebase.analytics().logEvent('select_content', {
       content_type: 'image',
       content_id: 'P12453',
@@ -100,7 +95,6 @@ export class HomePage implements OnInit {
     
     if(this.platform.is('cordova')){
       firebase.analytics().logEvent('my_event', {param1: "value1"});
-      
     }
     let modal = await this.modal.create({
       component:DataColectorComponent,

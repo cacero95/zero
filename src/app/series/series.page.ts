@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController, Platform } from '@ionic/angular';
 import { Upload_content } from '../models/usuario';
 import { VisualSeriesComponent } from '../components/visual-series/visual-series.component';
-import { ColectionsService } from '../services/colections.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { DbaService } from '../services/dba.service';
 
 
 @Component({
@@ -15,17 +15,28 @@ export class SeriesPage implements OnInit {
 
   series = [];
   constructor(private modal:ModalController,
-    private collection:ColectionsService,
-    private http:HttpClient) { }
+    private http:HttpClient,
+    private dba:DbaService,
+    private alert:AlertController,
+    private platform:Platform) { }
 
   ngOnInit() {
-    this.collection.getCollection().then((data:any)=>{
+
+    this.dba.get_content('series').subscribe((data)=>{
       this.series = data;
       console.log(this.series);
-      for(let test of this.series){
-        console.log(test.data());
-      }
     })
+    /**
+     this.collection.getCollection().then((data:any)=>{
+       this.series = data;
+       console.log(this.series);
+       for(let test of this.series){
+         console.log(test.data());
+       }
+     })
+     * 
+     * 
+     */
   }
   async add_post (){
     let modal = await this.modal.create({
@@ -33,23 +44,60 @@ export class SeriesPage implements OnInit {
     });
     modal.present();
   }
-  push_funtions(){
-    let test:Upload_content = {
-      name:"2019 diciembre 10",
-	    description:"this is a test for firebase functions",
-	    url:"https://www.pushwoosh.com/blog/content/images/2019/03/regular_push_notification_flow-1.png"
+  async push_funtions(event){
+    if (!this.platform.is('cordova')){
+      if (event){
+        let file = {} as Upload_content;
+        file["archivos"] = event.target.files;
+        file.name = new Date().valueOf().toString();
+        let alert = await this.alert.create({
+          header:'Agrega una Descripción',
+          inputs:[
+            {
+              name:'description',
+              type:'text',
+              placeholder:'Descripción'
+            }
+          ],
+          buttons:[
+            {
+              text:'Confirmar',
+              handler:(value)=>{
+                file.description = "";
+                file.description = value.description
+              }
+            },
+            {
+              text:'Cancelar'
+            }
+          ]
+        });
+        alert.present();
+        await alert.onDidDismiss().then(()=>{
+          this.dba.upload_series('series',file).then((salida)=>{
+          })
+        })
+      }
     }
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'secret-key'
-      })
-     };
-    console.log(test);
-    this.http.post('https://us-central1-atomic-snow-220819.cloudfunctions.net/updateDataDba',test,httpOptions).subscribe((data)=>{
-      console.log(data);
-    },(err)=>{
-      console.log(err);
-    })
+    /**
+     let test:Upload_content = {
+       name:"2019 diciembre 10",
+       description:"this is a test for firebase functions",
+       url:"https://www.pushwoosh.com/blog/content/images/2019/03/regular_push_notification_flow-1.png"
+     }
+     const httpOptions = {
+       headers: new HttpHeaders({
+         'Content-Type':  'application/json',
+         'Authorization': 'secret-key'
+       })
+      };
+     console.log(test);
+     this.http.post('https://us-central1-atomic-snow-220819.cloudfunctions.net/updateDataDba',test,httpOptions).subscribe((data)=>{
+       console.log(data);
+     },(err)=>{
+       console.log(err);
+     })
+     * 
+     */
   }
 }

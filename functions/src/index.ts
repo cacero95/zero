@@ -34,14 +34,11 @@ exports.updateDataDba = functions.https.onRequest((request, response) => {
             description:body.description,
             url:body.url
         };
-        admin.database().ref("imagenes").update(push_data).then((output)=>{
-            console.log('salida ok')
-            console.log(output);
-            response.status(200).send('Done');
+        let date = new Date().valueOf().toString();
+        admin.database().ref(`imagenes/${date}`).update(push_data).then((output)=>{
+            response.status(200).send(output);
         }).catch((err)=>{
-            console.log('salida err');
-            console.log(err);
-            response.status(400).send();
+            response.status(400).send(err);
         })
     });
 });
