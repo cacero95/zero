@@ -15,7 +15,7 @@ export class HomePage implements OnInit {
   current_song;
   toolbar = [
     {
-      title:'Tesis',
+      title:'TESIS',
       icon:'assets/img/pawprint.svg',
       value:0,
       content:{
@@ -27,7 +27,7 @@ export class HomePage implements OnInit {
       }
     },
     {
-      title:'Music',
+      title:'MUSIC',
       icon:'assets/img/play_button.svg',
       value:1,
       content:{
@@ -36,7 +36,7 @@ export class HomePage implements OnInit {
       }
     },
     {
-      title:'Games',
+      title:'GAMES',
       icon:'assets/img/ps.svg',
       value:2,
       content: {
