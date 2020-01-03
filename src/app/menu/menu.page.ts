@@ -28,6 +28,11 @@ export class MenuPage implements OnInit {
       title:'Videos',
       url:'/menu/video',
       icon:'play-circle'
+    },
+    {
+      title:'Public',
+      url:'/menu/principal',
+      icon:'cloud'
     }
   ];
   constructor(private router:Router,
