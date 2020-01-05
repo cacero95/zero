@@ -6,11 +6,65 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./principal.page.scss'],
 })
 export class PrincipalPage implements OnInit {
+  
+  index = [
+    {
+      title:'INICIO',
+    },
+    {
+      title:'CHILDREN'
+    },
+    {
+      title:'TIENDA',
+      children:[
+        "PARTES DE MOTOR",
+        "TREN DE RODAJE",
+        "KIT HIDRÁULICO",
+        "FILTRACIÓN",
+        "HERRAMIENTA DE CORTE"
+      ]
+    },
+    {
+      title:"LINEAS",
+      children:[
+        "Tren de rodaje",
+        "Partes de Motor",
+        "Herramientas de corte",
+        "Filtración",
+        "Kit Hidráulico",
+        "Lubricantes"
+      ]
+    },
+    {
+      title:"NOTICIAS",
+      children:[
+        "blog"
+      ]
+    },
+    {
+      title:"CONTACTENOS"
+    },
+    {
+      title:"CATALOGOS",
+      children:[
+        "JOHN DEERE",
+        "KOMATSU"
+      ]
+    }
+  ];
+  contador_clase = "INICIO";
   contador = 0;
   slides = [
-    "assets/img/slide1_final.jpg",
-    "assets/img/slide2_final.jpg",
-    "assets/img/slide3_final.jpg"
+    {
+      img:"assets/img/slide1_final.jpg"
+    },
+    {
+      img:"assets/img/slide2_final.jpg",
+      
+    },
+    {
+      img:"assets/img/slide3_final.jpg"
+    }
   ]  
   constructor() { }
 

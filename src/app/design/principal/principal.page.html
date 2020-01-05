@@ -1,5 +1,44 @@
 <ion-content margin>
-    <div class="banner" [style.background-image]="'url(' + slides[0] + ')'" id="banner">
+    <div class="banner" [style.background-image]="'url(' + slides[contador].img + ')'" id="banner">
+        <div>
+            <span class="contact" text-center>
+                <ion-icon color="warning" slot="start" name="pin"></ion-icon>
+                Calle 6 # 25-09
+            </span>
+            <span class="contact">
+                <ion-icon color="warning" name="call"></ion-icon>
+                Teléfono: 3512950-7559245
+            </span>
+            <span class="contact">
+                <ion-icon slot="start" color="warning" mode="md" name="mail"></ion-icon>
+                <a style="color: #ffffff; text-decoration:none;"
+                    href="mailto:gerencia@tractopesados.com">gerencia@tractopesados.com</a>
+            </span>
+            <span class="contact">
+                <ion-icon color="success" style="margin-top: -10px;" size="large" slot="start" name="logo-whatsapp">
+                </ion-icon>
+                <div>
+                    <input
+                        style="margin-top:-20px;border-radius: 20px; padding-top: 5px; color: #ffffff; padding-left: 5px; padding-bottom: 5px; background: transparent;"
+                        type="text" placeholder="Buscar...">
+                </div>
+            </span>
+        </div>
 
+        <div class="navbar">
+            <a>
+                <img width="300px" src="assets/img/logo_finalblanco.png" alt="logo_tractopesados">
+            </a>
+            <div class="menu-toggle"></div>
+            <ul>
+                <li *ngFor="let item of index"><a (click)="contador_clase = item.title" class="links_navbar" [ngClass]="{'active': contador_clase == item.title}">{{item.title}}</a>
+                    <div class="hijos" *ngIf="item.children">
+                        <a *ngFor="let son of item.children">
+                            {{son}}
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
 </ion-content>
